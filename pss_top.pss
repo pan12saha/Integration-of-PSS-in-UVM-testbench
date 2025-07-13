@@ -1,0 +1,69 @@
+import std_pkg::*;
+
+component pss_top{
+  sv_uvm_executable the executable;
+  ps_thread main_thread;
+
+  exec init_up{
+    main_thread.executable = the_executable;
+    the_executable.target_file_name = "alu_thread";
+    thread = main_thread;  
+  };
+
+  import target SV function void alu_operations(output bit[8] alu_result, input bit[8] a, input bit[8] b, input bit[4] op_mode);
+  import target SV function void reset_dut();
+
+  action reset_alu{
+    exec body{
+      comp.reset_dut();
+    };
+  };
+
+  action alu_base_action{
+    rand bit[8] a;
+    rand bit[8] b;
+    rand bit[4] operation;
+    bit[8] alu_out;
+    bit c_out;
+
+    constraint a in [0..100];
+    constraint b in [0..100];
+
+    exec body{
+      comp.alu_operation(alu_out,a,b,operation);
+      message(NONE,"TRN INFO A=>%d",a);
+      message(NONE,"TRN INFO B=>%d",b);
+      message(NONE,"TRN INFO operation=>%d",operation);
+      message(NONE,"TRN INFO ALU_OUT=>%d",alu_out);
+    };  
+  };
+
+  action add:alu_base_action{
+    constraint operation == 0;
+  };
+
+  action subtract:alu_base_action{
+    constraint operation == 1;
+  };
+
+  action multiply:alu_base_action{
+    constraint operation == 2;
+  };
+
+  action divide:alu_base_action{
+    constraint operation == 3;
+  };
+
+  action test{
+    activity{
+      parallel{
+        repeat(5){
+          do add;
+          do subtract;
+          do multiply;
+          do divide;
+        };
+      };
+    };
+  };
+};
