@@ -1,0 +1,52 @@
+extend component pss_top{
+  exec file "perspec_exports.sv"="""
+    `include "perspec_exported_types.svh"
+
+    import alu_pkg::*;
+    import uvm_pkg::*;
+
+    task automatic reset_dut();
+      uvm_sequencer_base seqer;
+      alu_base_sequence reset_seq;
+
+      uvm_pkg::uvm_root top=uvm_pkg::uvm_root::get();
+
+      if(!cast(seqer,top.find("*sqr"))) begin
+        `uvm_fatal("WRONG INSTANCE TYPE","UVM seqer casting failed");
+      end
+
+      if(seqer == null) begin
+        `uvm_fatal("BAD_INSTANCE_NAME",$sformat("filed to find the component with path %s", "*sqr"));
+      end
+
+      reset_seq = alu_base_sequence::type_id::create("reset_seq");
+      reset_seq.start(seqer);
+    endtask
+
+    task automatic alu_operations();
+      uvm_sequencer_base seqer;
+
+      pss_alu_test_sequence test_seq;
+      uvm_pkg::uvm_root top top = uvm_pkg::uvm_root::get();
+
+      if(!cast(seqer,top.find("*sqr")))begin
+        `uvm_fatal("WRONG INSTANCE TYPE","UVM seqer casting failed");
+      end
+
+      if(seqer == null)begin
+        `uvm_fatal("BAD_INSTANCE_NAME",$sformatf("failed to find the component with path %s","*sqr"));
+      end
+
+      `uvm_info("PSS_LOG",$sformatf("Value a = %d",a),UVM_DEBUG);
+      `uvm_info("PSS_LOG",$sformatf("Value b = %d",b),UVM_DEBUG);
+      `uvm_info("PSS_LOG",$sformatf("Value op = %d",op),UVM_DEBUG);
+
+      test_seq = pss_alu_test_sequence::type_id::create("test_seq",seqer);
+
+      test_seq.start(seqer);
+
+      `uvm_info("PSS_LOG",$sformatf("value of RESULT = %d", test_seq.item.result),UVM_DEBUG);
+      alu_result = test_seq.item.result;
+    endtask
+  """;
+};
