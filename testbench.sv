@@ -21,7 +21,9 @@ import uvm_pkg::*;
 
 module top;
  
-  
+  //Instantiate Perspec Module
+  perspec_top perspec_top();
+ 
   logic clock;
   alu_interface intf(.clock(clock));
   
