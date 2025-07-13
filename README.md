@@ -7,4 +7,4 @@ In this project I have integrated/Demonstrate PSS model into the existing System
 
 //To Run this project please fire a run script run.sh. It contains all the command used to run this PSS UVM test bench integration.
 
-To learn about more for Cadence Perspec systme verifier you can visit : https://www.youtube.com/watch?v=BeDDxCu3Zlc&ab_channel=CadenceDesignSystems
+To learn more about Cadence Perspec systme verifier you can visit : https://www.youtube.com/watch?v=BeDDxCu3Zlc&ab_channel=CadenceDesignSystems
