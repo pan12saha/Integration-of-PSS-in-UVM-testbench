@@ -1,0 +1,3 @@
+component alu_sequencer : uvm_sequencer_if_c{
+  import target SV function bit[8] alu_operations(bit[8] a_in,bit[8] b_in);
+};
