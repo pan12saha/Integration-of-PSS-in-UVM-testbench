@@ -1,3 +1,5 @@
+import perspec_pkg::*;
+
 class alu_test extends uvm_test;
   `uvm_component_utils(alu_test)
   alu_env env;
@@ -37,9 +39,13 @@ class alu_test extends uvm_test;
     #10;
 
     repeat(100) begin
-      //test_seq
-      test_seq = alu_test_sequence::type_id::create("test_seq");
-      test_seq.start(env.agnt.sqr);
+      //test_seq // Following sequence start item should be disable as we are sending vectors from PSS model through scenario main.
+      //test_seq = alu_test_sequence::type_id::create("test_seq");
+      //test_seq.start(env.agnt.sqr);
+
+      `uvm_info("TEST_CLASS","DEBUG:Inside the test....,before secnario main",UVM_DEBUG);
+      perspec_pkg::scenario_main();
+      `uvm_info("TEST_CLASS","DEBUG:Inside the test....,after secnario main",UVM_DEBUG);
       #10;
     end
     
